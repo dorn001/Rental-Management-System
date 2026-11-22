@@ -1,2 +1,373 @@
 # Rental-Management-System
 A webpage to be usefull to tenants and landlords in rental management 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="theme-color" content="#0b2545" />
+  <title>EstatePulse Pro — Smart Property & Rental OS</title>
+  <style>
+    :root {
+      --primary: #0b2545;
+      --primary-2: #133c6d;
+      --accent: #0096c7;
+      --whatsapp: #25d366;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --green: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --purple: #7c3aed;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* PIN Lock Screen */
+    #lockScreen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(145deg, #0b2545, #0077b6);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 2000;
+    }
+
+    .lock-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      padding: 28px 24px;
+      width: 100%;
+      max-width: 340px;
+      text-align: center;
+    }
+
+    .lock-card h2 { margin-bottom: 6px; font-size: 1.35rem; }
+    .lock-card p { font-size: 0.85rem; opacity: 0.85; margin-bottom: 18px; }
+
+    .pin-input {
+      background: #fff;
+      color: #0b2545;
+      font-size: 1.5rem;
+      letter-spacing: 10px;
+      text-align: center;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      width: 100%;
+      margin-bottom: 14px;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      width: 255px;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 18px 0;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      padding: 0 20px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand h2 { font-size: 1.15rem; }
+    .brand span { font-size: 0.75rem; color: #90e0ef; display: block; }
+
+    .nav-links { list-style: none; margin-top: 10px; }
+    .nav-links li {
+      padding: 13px 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+
+    .nav-links li:hover, .nav-links li.active {
+      background: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Main Workspace */
+    .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+    .topbar {
+      background: var(--card);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .topbar h1 { font-size: 1.15rem; color: var(--primary); }
+    .topbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 9px 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.83rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn:hover { opacity: 0.92; }
+    .btn-wa { background: var(--whatsapp); color: #052e16; }
+    .btn-dark { background: var(--primary); }
+    .btn-danger { background: var(--red); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-sm { padding: 6px 10px; font-size: 0.76rem; }
+
+    .content { padding: 18px; max-width: 1180px; width: 100%; }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .kpi-card {
+      padding: 16px;
+      border-radius: 12px;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(11, 37, 69, 0.08);
+    }
+
+    .kpi-blue { background: linear-gradient(135deg, #0284c7, #0096c7); }
+    .kpi-teal { background: linear-gradient(135deg, #0d9488, #10b981); }
+    .kpi-purple { background: linear-gradient(135deg, #6d28d9, #8b5cf6); }
+    .kpi-navy { background: linear-gradient(135deg, #0b2545, #1e3a8a); }
+
+    .kpi-card p { font-size: 0.8rem; opacity: 0.9; margin-bottom: 5px; }
+    .kpi-card h2 { font-size: 1.45rem; }
+
+    /* Progress & Alerts */
+    .progress-wrap {
+      background: var(--card);
+      padding: 15px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar { height: 10px; background: #e2e8f0; border-radius: 99px; overflow: hidden; }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #0096c7);
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .section { display: none; }
+    .section.active { display: block; }
+
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+      overflow-x: auto;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .card h3 { color: var(--primary); font-size: 1rem; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+      gap: 10px;
+    }
+
+    label.field-label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    input, select {
+      padding: 10px 11px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      width: 100%;
+      background: #f8fafc;
+    }
+
+    table { width: 100%; border-collapse: collapse; min-width: 560px; }
+    th, td {
+      text-align: left;
+      padding: 10px 11px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+    th { background: #f8fafc; color: var(--muted); font-weight: 600; }
+
+    .badge {
+      padding: 3px 9px;
+      border-radius: 99px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+    .badge-paid { background: #d1fae5; color: #065f46; }
+    .badge-pending { background: #fef3c7; color: #92400e; }
+    .badge-open { background: #fee2e2; color: #991b1b; }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.68);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 1500;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal-box {
+      background: #fff;
+      width: 100%;
+      max-width: 410px;
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
+      border-top: 6px solid var(--accent);
+    }
+
+    .receipt-header {
+      text-align: center;
+      border-bottom: 1px dashed var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+    }
+
+    .receipt-total {
+      border-top: 1px dashed var(--border);
+      padding-top: 10px;
+      margin-top: 10px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--primary);
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      .sidebar { width: 100%; padding: 10px 0 0; }
+      .nav-links { display: flex; overflow-x: auto; margin-top: 8px; scrollbar-width: none; }
+      .nav-links::-webkit-scrollbar { display: none; }
+      .nav-links li { white-space: nowrap; padding: 10px 14px; font-size: 0.83rem; }
+      .content { padding: 12px; }
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #receiptModal, #receiptModal * { visibility: visible; }
+      #receiptModal { position: absolute; inset: 0; background: none; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PIN Security Lock -->
+  <div id="lockScreen">
+    <div class="lock-card">
+      <h2>🔒 EstatePulse Pro</h2>
+      <p>Enter your 4-digit security PIN<br><small>(Default PIN: <strong>1234</strong>)</small></p>
+      <input type="password" inputmode="numeric" maxlength="4" id="pinField" class="pin-input" placeholder="••••" onkeyup="if(this.value.length===4) unlockApp()" />
+      <button class="btn" style="width: 100%; justify-content: center; padding: 12px;" onclick="unlockApp()">Unlock System</button>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div>
+        <h2 id="brandTitle">ESTATE PULSE PRO</h2>
+        <span>Smart Rental & Utility OS</span>
+      </div>
+      <button class="btn btn-sm btn-outline" style="color:#fff; border-color:rgba(255,255,255,0.3);" onclick="lockApp()">Lock</button>
+    </div>
+    <ul class="nav-links" id="navMenu">
+      <li class="active" data-target="dashboard">📊 Dashboard</li>
+      <li data-target="properties">🏢 Properties</li>
+      <li data-target="tenants">👥 Tenants</li>
+      <li data-target="payments">💳 Rent & Utilities</li>
+      <li data-target="maintenance">🛠️ Maintenance</li>
+      <li data-target="settings">⚙️ Reports & Backup</li>
+    </ul>
+  </aside>
