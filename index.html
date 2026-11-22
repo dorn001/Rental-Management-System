@@ -8,7 +8,6 @@
   <style>
     :root {
       --primary: #0b2545;
-      --primary-2: #133c6d;
       --accent: #0096c7;
       --whatsapp: #25d366;
       --bg: #f1f5f9;
@@ -50,9 +49,9 @@
     }
 
     .lock-card {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       border-radius: 18px;
       padding: 28px 24px;
       width: 100%;
@@ -61,7 +60,7 @@
     }
 
     .lock-card h2 { margin-bottom: 6px; font-size: 1.35rem; }
-    .lock-card p { font-size: 0.85rem; opacity: 0.85; margin-bottom: 18px; }
+    .lock-card p { font-size: 0.85rem; opacity: 0.9; margin-bottom: 18px; }
 
     .pin-input {
       background: #fff;
@@ -346,8 +345,8 @@
     <div class="lock-card">
       <h2>🔒 EstatePulse Pro</h2>
       <p>Enter your 4-digit security PIN<br><small>(Default PIN: <strong>1234</strong>)</small></p>
-      <input type="password" inputmode="numeric" maxlength="4" id="pinField" class="pin-input" placeholder="••••" onkeyup="if(this.value.length===4) unlockApp()" />
-      <button class="btn" style="width: 100%; justify-content: center; padding: 12px;" onclick="unlockApp()">Unlock System</button>
+      <input type="password" inputmode="numeric" maxlength="4" id="pinField" class="pin-input" placeholder="••••" />
+      <button type="button" class="btn" id="unlockBtn" style="width: 100%; justify-content: center; padding: 12px;">Unlock System</button>
     </div>
   </div>
 
@@ -358,7 +357,7 @@
         <h2 id="brandTitle">ESTATE PULSE PRO</h2>
         <span>Smart Rental & Utility OS</span>
       </div>
-      <button class="btn btn-sm btn-outline" style="color:#fff; border-color:rgba(255,255,255,0.3);" onclick="lockApp()">Lock</button>
+      <button type="button" class="btn btn-sm btn-outline" style="color:#fff; border-color:rgba(255,255,255,0.3);" onclick="lockApp()">Lock</button>
     </div>
     <ul class="nav-links" id="navMenu">
       <li class="active" data-target="dashboard">📊 Dashboard</li>
@@ -370,3 +369,4 @@
     </ul>
   </aside>
 
+  <!-- Main Workspace -->
