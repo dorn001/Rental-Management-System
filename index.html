@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EstatePulse Pro — Rental OS</title>
   <style>
-    :root { --primary:#0b2545; --accent:#0096c7; --wa:#25d366; --bg:#f1f5f9; --card:#fff; --text:#0f172a; --muted:#64748b; --border:#e2e8f0; --green:#10b981; --red:#ef4444; }
+    :root { --primary:#0b2545; --accent:#0096c7; --wa:#25d366; --bg:#f1f5f9; --card:#fff; --text:#0f172a; --muted:#64748b; --border:#e2e8f0; --red:#ef4444; }
     * { box-sizing:border-box; margin:0; padding:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
     body { background:var(--bg); color:var(--text); display:flex; min-height:100vh; }
     #lockScreen { position:fixed; inset:0; background:linear-gradient(145deg,#0b2545,#0077b6); color:#fff; display:flex; align-items:center; justify-content:center; padding:20px; z-index:2000; }
-    .lock-card { background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.25); border-radius:16px; padding:26px 22px; width:100%; max-width:330px; text-align:center; }
+    .lock-card { background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:16px; padding:26px 22px; width:100%; max-width:330px; text-align:center; }
     .pin-input { background:#fff; color:#0b2545; font-size:1.5rem; letter-spacing:10px; text-align:center; font-weight:700; padding:12px; border-radius:10px; border:none; width:100%; margin:14px 0; }
     .sidebar { width:240px; background:var(--primary); color:#fff; display:flex; flex-direction:column; padding:16px 0; flex-shrink:0; }
     .brand { padding:0 18px 14px; border-bottom:1px solid rgba(255,255,255,0.12); display:flex; justify-content:space-between; align-items:center; }
@@ -18,7 +18,7 @@
     .nav-links li.active { background:var(--accent); font-weight:600; }
     .main { flex:1; display:flex; flex-direction:column; min-width:0; }
     .topbar { background:var(--card); padding:14px 18px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); gap:8px; flex-wrap:wrap; }
-    .btn { background:var(--accent); color:#fff; border:none; padding:9px 13px; border-radius:8px; cursor:pointer; font-weight:600; font-size:0.83rem; }
+    .btn { background:var(--accent); color:#fff; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; font-weight:600; font-size:0.85rem; }
     .btn-wa { background:var(--wa); color:#052e16; }
     .btn-dark { background:var(--primary); }
     .btn-danger { background:var(--red); }
@@ -56,8 +56,8 @@
     <div class="lock-card">
       <h2>🔒 EstatePulse Pro</h2>
       <p style="font-size:0.84rem;opacity:0.9;margin-top:4px;">Enter 4-digit PIN (Default: <strong>1234</strong>)</p>
-      <input type="password" inputmode="numeric" maxlength="4" id="pinField" class="pin-input" placeholder="••••" />
-      <button type="button" class="btn" id="unlockBtn" style="width:100%;padding:12px;">Unlock System</button>
+      <input type="password" inputmode="numeric" maxlength="4" id="pinField" class="pin-input" placeholder="••••" oninput="if(this.value.length===4) unlockNow()" />
+      <button type="button" class="btn" style="width:100%;padding:12px;" onclick="unlockNow()">Unlock System</button>
     </div>
   </div>
 
@@ -67,12 +67,12 @@
       <button type="button" class="btn btn-sm btn-outline" style="color:#fff;" onclick="document.getElementById('lockScreen').style.display='flex'">Lock</button>
     </div>
     <ul class="nav-links" id="navMenu">
-      <li class="active" data-target="dashboard">📊 Dashboard</li>
-      <li data-target="properties">🏢 Properties</li>
-      <li data-target="tenants">👥 Tenants</li>
-      <li data-target="payments">💳 Rent & M-Pesa</li>
-      <li data-target="maintenance">🛠️ Maintenance</li>
-      <li data-target="settings">⚙️ Settings & Backup</li>
+      <li class="active" data-target="dashboard" onclick="switchTab('dashboard')">📊 Dashboard</li>
+      <li data-target="properties" onclick="switchTab('properties')">🏢 Properties</li>
+      <li data-target="tenants" onclick="switchTab('tenants')">👥 Tenants</li>
+      <li data-target="payments" onclick="switchTab('payments')">💳 Rent & M-Pesa</li>
+      <li data-target="maintenance" onclick="switchTab('maintenance')">🛠️ Maintenance</li>
+      <li data-target="settings" onclick="switchTab('settings')">⚙️ Settings & Backup</li>
     </ul>
   </aside>
 
@@ -155,7 +155,3 @@
         </div>
       </section>
 
-      <section id="settings" class="section">
-        <div class="card">
-          <div class="card-header"><h3>Brand & PIN Settings</h3></div>
-          <div class="form-grid">
